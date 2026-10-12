@@ -49,13 +49,24 @@ It has no access to any other website, your browsing history or your other tabs.
 
 Found a security problem? Please open an issue in this repository.
 
-## Coming next
+## Roadmap
 
-- **More AI platforms:** Gemini, Grok, DeepSeek, Perplexity, Microsoft Copilot and Mistral Le Chat, plus a general mode for other chat sites.
-- **Images:** include the images from a chat, either inside a `.zip` download next to the Markdown or embedded when you paste into Docs or Notion.
-- **Bulk export:** save many chats at once, such as a whole project or your recent history, into one `.zip`.
-- **Cleaner ChatGPT layouts:** ChatGPT's interactive replies (cards, quizzes, inline citations) are currently copied as raw tags like `<box>` and `<radio>`; they'll become plain Markdown.
-- **And more:** ChatGPT temporary chats, PDF and HTML export, and listings on the Chrome, Firefox and Edge stores.
+- [x] ChatGPT
+- [x] Claude
+- [x] Copy as Markdown, download as Markdown or JSON
+- [ ] Gemini
+- [ ] Grok
+- [ ] DeepSeek
+- [ ] Perplexity
+- [ ] Microsoft Copilot
+- [ ] Mistral Le Chat
+- [ ] Other chat sites (general mode)
+- [ ] Images in exports
+- [ ] Bulk export (many chats into one `.zip`)
+- [ ] Clean up ChatGPT's interactive layouts (cards, quizzes, citations)
+- [ ] ChatGPT temporary chats
+- [ ] PDF and HTML export
+- [ ] Chrome, Firefox and Edge store listings
 
 ## Install from source
 
