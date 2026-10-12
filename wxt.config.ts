@@ -33,6 +33,6 @@ export default defineConfig({
   }),
   // The landing page in site/ isn't part of the extension; keep it out of the AMO source zip.
   zip: {
-    excludeSources: ['site/**', '.github/**'],
+    excludeSources: ['site/**', 'wrangler.jsonc'],
   },
 });
