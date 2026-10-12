@@ -1,78 +1,82 @@
 # Copy Chat
 
-Browser extension that copies a **whole** ChatGPT or Claude conversation as Markdown in one click, or saves it as a `.md` / `.json` file. Everything runs in your browser; nothing is uploaded.
+Copy a **whole** ChatGPT or Claude conversation as clean Markdown in one click, or save it as a `.md` or `.json` file.
 
-## Features
+The built-in copy buttons copy one message at a time. Copy Chat copies the entire conversation, including the parts that aren't on screen, so you can paste it into notes, docs, another AI, or keep it as a backup.
 
-- **Toolbar popup:** *Copy chat*, *Markdown* and *JSON* download buttons, plus export settings.
-- **Right-click** any ChatGPT or Claude chat: *Copy chat as Markdown*, *Download chat as Markdown*, *Download chat as JSON*. A ✓ or ! on the toolbar icon shows the result (hover it for details).
-- `Alt+Shift+C` copies the current chat (change it at `chrome://extensions/shortcuts`).
-- Copies Markdown as plain text **and** formatted HTML, so pasting into Docs/Notion keeps headings, lists and code.
-- Gets the full conversation from the site's own data (not just what's on screen), including:
-  - only the branch you are looking at after edits and regenerations,
-  - Claude artifacts and ChatGPT canvas documents, in their final version,
-  - optional thinking, tool calls and uploaded file contents (toggle in the popup).
-- Falls back to reading the page if the site's data can't be loaded, and says so in the copy when messages may be missing.
+## Using it
 
-## Supported sites
+On a ChatGPT or Claude chat, any of these work:
 
-| Site | Chats | Shared links |
-|---|---|---|
-| chatgpt.com | `/c/…`, custom GPT and project chats, signed-out `/uc/…` chats | `/share/…` (works signed out) |
-| claude.ai | `/chat/…`, project chats | `/share/…` (needs sign-in) |
+- Click the **Copy Chat** icon in the toolbar, then **Copy chat**, **Markdown** or **JSON**.
+- **Right-click** the page and choose *Copy chat as Markdown*, *Download chat as Markdown* or *Download chat as JSON*.
+- Press **Alt+Shift+C** to copy the chat. You can change the key at `chrome://extensions/shortcuts`.
 
-## Development
+In the toolbar popup you can choose what to include: thinking steps, tool calls, the text of uploaded files, and a title-and-link header.
 
-Requires Node 20+ and pnpm.
+Works on:
 
-```sh
-pnpm install
-pnpm dev               # Chrome with the extension loaded and auto-reload
-pnpm dev:firefox       # Firefox (MV3)
-pnpm test              # unit tests
-pnpm compile           # type-check
-pnpm build             # .output/chrome-mv3
-pnpm build:firefox     # .output/firefox-mv3
-pnpm zip && pnpm zip:firefox   # store-ready zips
-```
-
-Load a build manually: `chrome://extensions` → Developer mode → **Load unpacked** → `.output/chrome-mv3`.
-
-The extension icons in `public/icon/` are rendered from `assets/icon.svg`.
+- **ChatGPT**: regular chats, project and custom GPT chats, shared links, and chats while signed out.
+- **Claude**: regular chats, project chats and shared links.
 
 ## How it works
 
+1. When you ask for a copy, the extension reads the conversation the same way the site's own page does: it requests the chat from the site you're on (chatgpt.com or claude.ai), using your existing login.
+2. It keeps only the version of the chat you're looking at. If you edited a message or regenerated a reply, the other versions are left out.
+3. It turns the conversation into Markdown: your messages, the replies, code blocks, tables and math. Claude artifacts and ChatGPT canvas documents are included in their final version.
+4. The result goes to your clipboard, both as Markdown and as formatted text so it pastes well into Google Docs or Notion, or into a file in your Downloads folder.
+
+If the site's data can't be loaded, Copy Chat falls back to reading the messages shown on the page. It adds a note to the copy when some messages may be missing.
+
+## Permissions
+
+| Permission | Why it's needed |
+|---|---|
+| Access to `chatgpt.com`, `chat.openai.com` and `claude.ai` | To read the chat you ask it to copy. Chrome shows this as "Read and change your data on these sites". Copy Chat only reads; it never changes the page. |
+| `scripting` | To start working in a chat tab that was already open before you installed or updated the extension, so you don't have to reload the tab. |
+| `contextMenus` | To add the right-click menu items. |
+| `storage` | To remember your settings (what to include in exports). |
+
+It has no access to any other website, your browsing history or your other tabs.
+
+## Security and privacy
+
+- **Nothing leaves your browser.** There is no server, no account, no analytics and no tracking. Your chats go only to your clipboard or a file you download.
+- **Only when you ask.** The extension contacts ChatGPT or Claude only when you click Copy or Download, and only for the chat in front of you. It never runs in the background or downloads your chat history.
+- **Your login stays with the site.** Requests use the session you already have on chatgpt.com or claude.ai. Copy Chat doesn't store passwords, cookies or tokens.
+- **No remote code.** Everything it runs ships inside the extension, as the Chrome and Firefox stores require.
+- **Open source.** The full code is in this repository under the MIT license.
+
+Found a security problem? Please report it privately to ssubhendu988@gmail.com instead of opening a public issue.
+
+## Coming next
+
+- **More AI platforms:** Gemini, Grok, DeepSeek, Perplexity, Microsoft Copilot and Mistral Le Chat, plus a general mode for other chat sites.
+- **Images:** include the images from a chat, either inside a `.zip` download next to the Markdown or embedded when you paste into Docs or Notion.
+- **Bulk export:** save many chats at once, such as a whole project or your recent history, into one `.zip`.
+- **Cleaner ChatGPT layouts:** ChatGPT's interactive replies (cards, quizzes, inline citations) are currently copied as raw tags like `<box>` and `<radio>`; they'll become plain Markdown.
+- **And more:** ChatGPT temporary chats, PDF and HTML export, and listings on the Chrome, Firefox and Edge stores.
+
+## Install from source
+
+Requires Node 20+ and [pnpm](https://pnpm.io).
+
+```sh
+pnpm install
+pnpm build
 ```
-entrypoints/
-  content.ts            Runs in chat tabs: builds the export, copies or downloads it on request
-  background.ts         Right-click menu, keyboard shortcut, toolbar badge
-  popup/                Toolbar popup: actions and export settings
-  chatgpt-share.content.ts  Page-world helper: reads the chat embedded in ChatGPT share pages
-lib/
-  messages.ts           Popup/background ↔ chat tab messages
-  conversation.ts       Site-independent conversation model
-  sites/chatgpt.ts      GET /backend-api/conversation/{id}, walks current_node → root
-  sites/claude.ts       GET /api/organizations/{org}/chat_conversations/{id}?tree=True…
-  markdown.ts           Conversation → Markdown (+ HTML for the clipboard)
-  html-to-markdown.ts   Page fallback: rendered HTML → Markdown (KaTeX, code, tables)
+
+Then open `chrome://extensions`, turn on **Developer mode**, click **Load unpacked** and select the `.output/chrome-mv3` folder.
+
+For development:
+
+```sh
+pnpm dev            # opens Chrome with the extension and reloads on changes
+pnpm test           # unit tests
+pnpm compile        # type-check
+pnpm zip            # store-ready zip (pnpm zip:firefox for Firefox)
 ```
-
-Requests go to the same site you are on, with your existing session, only when you ask for an export. Permissions: `storage` (settings), `contextMenus` (right-click items), and `scripting` plus access to chatgpt.com / claude.ai so tabs that were open before installing or updating the extension work without a reload.
-
-These endpoints are undocumented and can change. When an API response looks wrong, the extension falls back to the page and adds a note to the export. Update the adapter in `lib/sites/` when a site changes.
-
-## Privacy
-
-Copy Chat collects nothing. It has no server, analytics or tracking: conversations are read from the site you are on and go only to your clipboard or a file on your computer.
-
-## Known limits
-
-- ChatGPT temporary chats aren't supported (their id never appears in the URL).
-- Signed-out ChatGPT chats aren't stored by ChatGPT, so they are read from the page.
-- Images are written as `*[Image]*` placeholders; image files aren't downloaded.
-- ChatGPT and Claude keep only nearby messages on the page, so the page fallback can miss earlier messages; the export says when that happened.
-- ChatGPT's interactive reply layouts (cards, quizzes, inline citations) are copied as their raw `<box>`, `<radio>`, `<Cite …/>`… markup.
 
 ## License
 
-[MIT](LICENSE) © Subhendu Singh. Bundled third-party code and its licenses are listed in [`public/THIRD_PARTY_LICENSES.txt`](public/THIRD_PARTY_LICENSES.txt), which ships inside the extension.
+[MIT](LICENSE) © Subhendu Singh. Third-party code bundled in the extension and its licenses are listed in [`public/THIRD_PARTY_LICENSES.txt`](public/THIRD_PARTY_LICENSES.txt).
