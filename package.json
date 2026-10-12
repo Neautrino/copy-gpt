@@ -2,22 +2,31 @@
   "name": "copy-chat",
   "description": "Copy full AI chats as Markdown in one click.",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "wxt",
-    "dev:firefox": "wxt -b firefox",
+    "dev:firefox": "wxt -b firefox --mv3",
     "build": "wxt build",
-    "build:firefox": "wxt build -b firefox",
+    "build:firefox": "wxt build -b firefox --mv3",
     "zip": "wxt zip",
-    "zip:firefox": "wxt zip -b firefox",
+    "zip:firefox": "wxt zip -b firefox --mv3",
     "compile": "tsc --noEmit",
+    "test": "vitest run",
     "postinstall": "wxt prepare"
   },
   "devDependencies": {
+    "@types/turndown": "^5.0.6",
+    "happy-dom": "^21.0.1",
     "typescript": "^5.9.3",
     "vite": "^8.1.5",
+    "vitest": "^5.0.4",
     "web-ext": "^10.5.0",
     "wxt": "^0.21.3"
+  },
+  "dependencies": {
+    "@joplin/turndown-plugin-gfm": "^1.0.68",
+    "marked": "^18.1.1",
+    "turndown": "^7.2.4"
   }
 }
