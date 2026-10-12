@@ -246,6 +246,8 @@ export function parseChatGPTConversation(data: ChatGPTConversationData, chat: { 
 const UUID = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 const SHARE_PATH = new RegExp(`^/share/(?:e/)?(${UUID})`, 'i');
 const CHAT_PATH = new RegExp(`/c/(${UUID})`, 'i');
+/** Signed-out chats: ChatGPT doesn't store them, so they exist only in the open tab. */
+const UNSAVED_PATH = new RegExp(`^/uc/(${UUID})`, 'i');
 
 async function fetchAuthorized(chatId: string): Promise<unknown> {
   const session = await getJson<{ accessToken?: string }>('/api/auth/session');
@@ -273,7 +275,9 @@ export const chatgpt: SiteAdapter = {
     const share = SHARE_PATH.exec(url.pathname);
     if (share?.[1]) return { kind: 'share', id: share[1] };
     const chat = CHAT_PATH.exec(url.pathname);
-    return chat?.[1] ? { kind: 'chat', id: chat[1] } : null;
+    if (chat?.[1]) return { kind: 'chat', id: chat[1] };
+    const unsaved = UNSAVED_PATH.exec(url.pathname);
+    return unsaved?.[1] ? { kind: 'unsaved', id: unsaved[1] } : null;
   },
 
   async fetchConversation(target, url) {
@@ -290,30 +294,47 @@ export const chatgpt: SiteAdapter = {
   },
 
   readPage(target, url) {
-    const turns = [...document.querySelectorAll('[data-testid^="conversation-turn-"]')];
+    // Signed-in layout: conversation-turn articles. Signed-out (/uc/) layout: a transcript list.
+    const turns = [
+      ...document.querySelectorAll('[data-testid^="conversation-turn-"], [data-conversation-transcript] > [data-message-role]'),
+    ];
     const messages: Message[] = [];
     let missing = 0;
     for (const turn of turns) {
       const author = turn.querySelector('[data-message-author-role]');
-      const role: Role = (turn.getAttribute('data-turn') ?? author?.getAttribute('data-message-author-role')) === 'user' ? 'user' : 'assistant';
-      const body = role === 'user' ? (author?.querySelector('.whitespace-pre-wrap') ?? author) : turn.querySelector('.markdown');
-      // ChatGPT unmounts off-screen turns, leaving empty placeholders.
-      const text = !body ? '' : role === 'user' ? (body.textContent?.trim() ?? '') : htmlToMarkdown(body);
+      const roleName =
+        turn.getAttribute('data-turn') ?? turn.getAttribute('data-message-role') ?? author?.getAttribute('data-message-author-role');
+      const role: Role = roleName === 'user' ? 'user' : 'assistant';
+      let text = '';
+      if (role === 'user') {
+        const bubble = turn.querySelector('[data-user-message-bubble]');
+        const paragraphs = bubble ? [...bubble.querySelectorAll('p')].map((p) => p.textContent ?? '') : [];
+        const body = author?.querySelector('.whitespace-pre-wrap') ?? author ?? bubble;
+        text = (paragraphs.length > 0 ? paragraphs.join('\n\n') : (body?.textContent ?? '')).trim();
+      } else {
+        const body = turn.querySelector('.markdown, [data-assistant-markdown]');
+        text = body ? htmlToMarkdown(body) : '';
+      }
+      // Signed-in ChatGPT unmounts off-screen turns, leaving empty placeholders.
       if (!text) {
         missing++;
         continue;
       }
       pushMessage(messages, {
-        id: author?.getAttribute('data-message-id') ?? `turn-${messages.length}`,
+        id: author?.getAttribute('data-message-id') ?? (turn.id || `turn-${messages.length}`),
         role,
         parts: [{ type: 'text', text }],
       });
     }
+    // Named chats put their title in the tab ("ChatGPT - Title"); unnamed ones only show the product name.
+    const pageTitle = document.title.replace(/^ChatGPT\s*-\s*/, '').trim();
+    const firstPart = messages.find((message) => message.role === 'user')?.parts[0];
+    const firstLine = firstPart?.type === 'text' ? firstPart.text.split('\n')[0]!.slice(0, 80) : '';
     return {
       site: 'chatgpt',
       siteName: 'ChatGPT',
       id: target.id,
-      title: document.title.trim() || 'Untitled chat',
+      title: (pageTitle && !pageTitle.startsWith('ChatGPT') ? pageTitle : firstLine) || 'Untitled chat',
       url: url.href,
       source: 'page',
       messages,

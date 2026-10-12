@@ -69,7 +69,8 @@ export function htmlToMarkdown(element: Element): string {
   const root = element.cloneNode(true) as Element;
   const doc = root.ownerDocument;
 
-  for (const display of root.querySelectorAll('.katex-display')) {
+  // `.katex-display` is KaTeX's own wrapper; signed-out ChatGPT marks display math with an attribute instead.
+  for (const display of root.querySelectorAll('.katex-display, [data-assistant-math-rendered="display"]')) {
     const tex = display.querySelector('annotation[encoding="application/x-tex"]')?.textContent;
     if (tex == null) continue;
     // The TeX is kept as text so Turndown doesn't drop the placeholder as an empty element.

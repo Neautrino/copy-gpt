@@ -1,7 +1,8 @@
 import type { Conversation, SiteId } from '../conversation';
 
 export interface ChatTarget {
-  kind: 'chat' | 'share';
+  /** `unsaved`: a chat the site keeps only in the open tab (ChatGPT signed out), so the page is the only source. */
+  kind: 'chat' | 'share' | 'unsaved';
   id: string;
 }
 
@@ -20,6 +21,11 @@ export interface SiteAdapter {
 export async function extractConversation(adapter: SiteAdapter, url: URL): Promise<Conversation> {
   const target = adapter.match(url);
   if (!target) throw new Error('Open a chat first, then copy it.');
+  if (target.kind === 'unsaved') {
+    const conversation = adapter.readPage(target, url);
+    if (conversation.messages.length === 0) throw new Error('No messages were found on the page.');
+    return conversation;
+  }
   try {
     return await adapter.fetchConversation(target, url);
   } catch (apiError) {

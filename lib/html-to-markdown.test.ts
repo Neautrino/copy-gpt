@@ -20,6 +20,12 @@ describe('htmlToMarkdown', () => {
     expect(markdown).toBe('Energy $E = mc^2$ and\n\n$$\n\\frac{a_1}{b}\n$$');
   });
 
+  it('treats signed-out ChatGPT display math as a block', () => {
+    const markdown = render(`<p>Mass:</p><span data-assistant-math-rendered="display">${katex('E=mc^2')}</span>`);
+
+    expect(markdown).toBe('Mass:\n\n$$\nE=mc^2\n$$');
+  });
+
   it('turns highlighted code blocks into fenced code with their language and without UI text', () => {
     const markdown = render(
       '<pre><div class="header">python<button>Copy code</button></div><div><code class="hljs"><span>print</span>("hi")</code></div></pre>',
