@@ -686,6 +686,47 @@ kbd {
   color: var(--ink);
 }
 
+/* ---------- Privacy policy page ---------- */
+
+.policy {
+  max-width: 720px;
+  padding-block: 48px 96px;
+}
+
+.policy h1 {
+  font-size: clamp(36px, 5vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.policy h2 {
+  margin: 40px 0 12px;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+}
+
+.policy p,
+.policy li {
+  color: #3b414b;
+}
+
+.policy p + p {
+  margin-top: 12px;
+}
+
+.policy ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 22px;
+}
+
+.policy-date {
+  margin: 12px 0 32px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
 /* ---------- Small screens ---------- */
 
 @media (max-width: 900px) {
