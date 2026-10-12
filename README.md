@@ -4,6 +4,8 @@ Copy a **whole** ChatGPT or Claude conversation as clean Markdown in one click, 
 
 The built-in copy buttons copy one message at a time. Copy Chat copies the entire conversation, including the parts that aren't on screen, so you can paste it into notes, docs, another AI, or keep it as a backup.
 
+**Website:** [copy-gpt.neautrino.space](https://copy-gpt.neautrino.space)
+
 ## Using it
 
 On a ChatGPT or Claude chat, any of these work:
