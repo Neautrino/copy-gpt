@@ -1,24 +1,41 @@
 import './style.css';
-import typescriptLogo from '@/assets/typescript.svg';
-import wxtLogo from '/wxt.svg';
-import { setupCounter } from '@/components/counter';
+import { browser } from 'wxt/browser';
+import { OPTION_LABELS, type ExportOptions } from '@/lib/options';
+import { getSettings, setSetting, watchSettings } from '@/lib/settings';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://wxt.dev" target="_blank">
-      <img src="${wxtLogo}" class="logo" alt="WXT logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>WXT + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the WXT and TypeScript logos to learn more
-    </p>
-  </div>
-`;
+const list = document.querySelector<HTMLDivElement>('#options')!;
+const keys = Object.keys(OPTION_LABELS) as (keyof ExportOptions)[];
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!);
+list.innerHTML = keys
+  .map(
+    (key) => `
+  <label class="option">
+    <span class="option-text">
+      <span class="option-label">${OPTION_LABELS[key].label}</span>
+      <span class="option-hint">${OPTION_LABELS[key].hint}</span>
+    </span>
+    <input type="checkbox" role="switch" data-option="${key}" />
+  </label>`,
+  )
+  .join('');
+
+const inputs = [...list.querySelectorAll<HTMLInputElement>('input[data-option]')];
+const render = (options: ExportOptions) => {
+  for (const input of inputs) {
+    const key = keys.find((candidate) => candidate === input.dataset.option);
+    if (key) input.checked = options[key];
+  }
+};
+
+for (const input of inputs) {
+  input.addEventListener('change', () => {
+    const key = keys.find((candidate) => candidate === input.dataset.option);
+    if (key) void setSetting(key, input.checked);
+  });
+}
+
+render(await getSettings());
+watchSettings(render);
+
+if (/Mac|iPhone|iPad/.test(navigator.platform)) document.querySelector('#shortcut')!.textContent = '⌥⇧C';
+document.querySelector('#version')!.textContent = `v${browser.runtime.getManifest().version}`;

@@ -1,0 +1,358 @@
+/* Rendered inside a shadow root; the page's CSS cannot reach these elements. */
+
+.cc {
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  position: fixed;
+  top: 64px;
+  right: 16px;
+  z-index: 2147483000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  font: 500 13px/1.25 ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.cc[data-theme='light'] {
+  --surface: #ffffff;
+  --hover: #f3f3f3;
+  --fg: #0d0d0d;
+  --muted: #6b6b6b;
+  --line: rgb(0 0 0 / 0.08);
+  --track: rgb(0 0 0 / 0.14);
+  --shadow: 0 0 0 1px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.04), 0 6px 20px rgb(0 0 0 / 0.08);
+  --success: #12805c;
+  --warning: #a15c07;
+  --danger: #c62828;
+}
+
+.cc[data-theme='dark'] {
+  --surface: #2b2b2b;
+  --hover: #383838;
+  --fg: #ececec;
+  --muted: #a1a1a1;
+  --line: rgb(255 255 255 / 0.1);
+  --track: rgb(255 255 255 / 0.2);
+  --shadow: 0 0 0 1px rgb(255 255 255 / 0.08), 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.4);
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --danger: #f87171;
+}
+
+button {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transition-property: background-color;
+  transition-duration: 120ms;
+  transition-timing-function: var(--ease);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+
+svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.75;
+}
+
+/* ---------- Split button ---------- */
+
+.bar {
+  display: inline-flex;
+  align-items: stretch;
+  height: 34px;
+  border-radius: 17px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  transition-property: scale;
+  transition-duration: 120ms;
+  transition-timing-function: var(--ease);
+}
+
+.bar:has(button:active) {
+  scale: 0.96;
+}
+
+.main {
+  gap: 7px;
+  padding: 0 11px 0 11px;
+  border-radius: 17px 0 0 17px;
+}
+
+.more {
+  justify-content: center;
+  width: 30px;
+  padding-right: 2px;
+  border-radius: 0 17px 17px 0;
+  color: var(--muted);
+}
+
+.main:hover,
+.more:hover,
+.cc[data-open] .more {
+  background: var(--hover);
+}
+
+.more svg {
+  width: 14px;
+  height: 14px;
+  transition-property: rotate;
+  transition-duration: 200ms;
+  transition-timing-function: var(--ease);
+}
+
+.cc[data-open] .more svg {
+  rotate: 180deg;
+}
+
+.divider {
+  width: 1px;
+  margin: 9px 0;
+  background: var(--line);
+}
+
+.label {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Icons cross-fade between states instead of swapping abruptly. */
+.icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+
+.icon svg {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  scale: 0.25;
+  filter: blur(4px);
+  transition-property: opacity, scale, filter;
+  transition-duration: 220ms;
+  transition-timing-function: var(--ease);
+}
+
+.cc[data-state='idle'] .i-copy,
+.cc[data-state='busy'] .i-spin,
+.cc[data-state='success'] .i-check,
+.cc[data-state='warning'] .i-alert,
+.cc[data-state='error'] .i-alert {
+  opacity: 1;
+  scale: 1;
+  filter: blur(0);
+}
+
+.i-spin {
+  animation: spin 0.8s linear infinite;
+}
+
+.cc[data-state='success'] .icon {
+  color: var(--success);
+}
+
+.cc[data-state='warning'] .icon {
+  color: var(--warning);
+}
+
+.cc[data-state='error'] .icon {
+  color: var(--danger);
+}
+
+.cc[data-state='busy'] .main {
+  cursor: progress;
+}
+
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+/* ---------- Menu ---------- */
+
+/* Floats over the toast instead of pushing it down. */
+.menu {
+  position: absolute;
+  top: 42px;
+  right: 0;
+  box-sizing: border-box;
+  width: 264px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  transform-origin: top right;
+  opacity: 0;
+  scale: 0.96;
+  translate: 0 -4px;
+  visibility: hidden;
+  pointer-events: none;
+  transition-property: opacity, scale, translate, visibility;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.cc[data-open] .menu {
+  opacity: 1;
+  scale: 1;
+  translate: 0 0;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.item {
+  gap: 10px;
+  width: 100%;
+  min-height: 36px;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.item:hover,
+.item:focus-visible {
+  outline: none;
+  background: var(--hover);
+}
+
+.item > svg {
+  color: var(--muted);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.hint {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.item kbd,
+.meta {
+  margin-left: auto;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.separator {
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--line);
+}
+
+.section {
+  padding: 8px 10px 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Switch shows the on/off state of each "Include" option. */
+.switch {
+  position: relative;
+  flex: none;
+  width: 28px;
+  height: 16px;
+  margin-left: auto;
+  border-radius: 8px;
+  background: var(--track);
+  transition-property: background-color;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease);
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+  transition-property: translate;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease);
+}
+
+.toggle[aria-checked='true'] .switch {
+  background: var(--fg);
+}
+
+.toggle[aria-checked='true'] .switch::after {
+  translate: 12px 0;
+}
+
+/* ---------- Toast ---------- */
+
+.toast {
+  box-sizing: border-box;
+  max-width: 300px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  font-weight: 400;
+  line-height: 1.45;
+  text-wrap: pretty;
+  cursor: default;
+  opacity: 0;
+  translate: 0 -4px;
+  visibility: hidden;
+  transition-property: opacity, translate, visibility;
+  transition-duration: 180ms;
+  transition-timing-function: ease-out;
+}
+
+.cc[data-toast] .toast {
+  opacity: 1;
+  translate: 0 0;
+  visibility: visible;
+}
+
+/* Narrow windows: icon-only button so it doesn't cover the conversation. */
+@media (max-width: 720px) {
+  .label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .main {
+    padding: 0 9px 0 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+  }
+
+  .i-spin {
+    animation-duration: 2s;
+  }
+}

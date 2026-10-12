@@ -3,11 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Default Popup Title</title>
+    <meta name="color-scheme" content="light dark" />
+    <title>Copy Chat</title>
     <meta name="manifest.type" content="browser_action" />
   </head>
   <body>
-    <div id="app"></div>
+    <main class="popup">
+      <header class="header">
+        <img class="logo" src="/icon/48.png" alt="" width="28" height="28" />
+        <div>
+          <h1>Copy Chat</h1>
+          <p class="subtitle">Copy whole AI chats as Markdown</p>
+        </div>
+      </header>
+
+      <p class="usage">
+        Open a chat on <a href="https://chatgpt.com" target="_blank" rel="noreferrer">ChatGPT</a> or
+        <a href="https://claude.ai" target="_blank" rel="noreferrer">Claude</a> and click <strong>Copy chat</strong> in the
+        top-right corner, or press <kbd id="shortcut">Alt+Shift+C</kbd>.
+      </p>
+
+      <section aria-labelledby="include-heading">
+        <h2 id="include-heading">Include in exports</h2>
+        <div id="options" class="options"></div>
+      </section>
+
+      <footer class="footer">
+        <span>Runs in your browser. Nothing is uploaded.</span>
+        <span id="version"></span>
+      </footer>
+    </main>
     <script type="module" src="./main.ts"></script>
   </body>
 </html>
