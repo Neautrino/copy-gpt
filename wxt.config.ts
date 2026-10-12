@@ -6,8 +6,15 @@ export default defineConfig({
     name: 'Copy Chat',
     description:
       'Copy or export full ChatGPT and Claude conversations as Markdown. Nothing leaves your browser.',
-    // Settings only; site access comes from the content script matches.
-    permissions: ['storage'],
+    // `storage` for settings, `contextMenus` for the right-click items. Site access comes from the
+    // content-script matches; no tabs/downloads/clipboard permissions are needed.
+    permissions: ['storage', 'contextMenus'],
+    commands: {
+      'copy-chat': {
+        suggested_key: { default: 'Alt+Shift+C' },
+        description: 'Copy the current chat as Markdown',
+      },
+    },
     ...(browser === 'firefox' && {
       browser_specific_settings: {
         gecko: {

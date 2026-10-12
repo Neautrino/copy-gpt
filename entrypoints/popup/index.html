@@ -11,17 +11,24 @@
     <main class="popup">
       <header class="header">
         <img class="logo" src="/icon/48.png" alt="" width="28" height="28" />
-        <div>
+        <div class="heading">
           <h1>Copy Chat</h1>
-          <p class="subtitle">Copy whole AI chats as Markdown</p>
+          <p class="status" id="status">Checking this tab…</p>
         </div>
       </header>
 
-      <p class="usage">
-        Open a chat on <a href="https://chatgpt.com" target="_blank" rel="noreferrer">ChatGPT</a> or
-        <a href="https://claude.ai" target="_blank" rel="noreferrer">Claude</a> and click <strong>Copy chat</strong> in the
-        top-right corner, or press <kbd id="shortcut">Alt+Shift+C</kbd>.
-      </p>
+      <section class="actions" aria-label="Export this chat">
+        <button class="primary" id="copy" type="button" disabled>
+          <span class="icon" data-icon="copy spinner check alert"></span>
+          <span class="primary-label">Copy chat</span>
+          <kbd id="shortcut" hidden></kbd>
+        </button>
+        <div class="secondary">
+          <button type="button" id="markdown" disabled><span data-icon="download"></span>Markdown</button>
+          <button type="button" id="json" disabled><span data-icon="braces"></span>JSON</button>
+        </div>
+        <p class="result" id="result" role="status" aria-live="polite"></p>
+      </section>
 
       <section aria-labelledby="include-heading">
         <h2 id="include-heading">Include in exports</h2>
@@ -29,7 +36,7 @@
       </section>
 
       <footer class="footer">
-        <span>Runs in your browser. Nothing is uploaded.</span>
+        <span>Tip: right-click a chat to copy it.</span>
         <span id="version"></span>
       </footer>
     </main>
