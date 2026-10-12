@@ -59,7 +59,6 @@ Found a security problem? Please open an issue in this repository.
 - [ ] Clean up ChatGPT's interactive layouts (cards, quizzes, citations)
 - [ ] ChatGPT temporary chats
 - [ ] PDF and HTML export
-- [ ] Chrome, Firefox and Edge store listings
 
 ## Install from source
 
