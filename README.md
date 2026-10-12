@@ -90,4 +90,4 @@ pnpm zip            # store-ready zip (pnpm zip:firefox for Firefox)
 
 ## License
 
-[MIT](LICENSE) © Subhendu Singh. Third-party code bundled in the extension and its licenses are listed in [`public/THIRD_PARTY_LICENSES.txt`](public/THIRD_PARTY_LICENSES.txt).
+[MIT](LICENSE) © neautrino. Third-party code bundled in the extension and its licenses are listed in [`public/THIRD_PARTY_LICENSES.txt`](public/THIRD_PARTY_LICENSES.txt).

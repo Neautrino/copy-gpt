@@ -20,7 +20,7 @@ export default defineConfig({
     ...(browser === 'firefox' && {
       browser_specific_settings: {
         gecko: {
-          id: 'copy-chat@ssubhendu988',
+          id: 'copy-chat@neautrino',
           // `data_collection_permissions` (required for new AMO listings) is supported from 140 (ESR).
           strict_min_version: '140.0',
           data_collection_permissions: { required: ['none'] },

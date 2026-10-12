@@ -2,7 +2,7 @@
   "name": "copy-chat",
   "description": "Copy full ChatGPT and Claude chats as Markdown in one click.",
   "license": "MIT",
-  "author": "Subhendu Singh <ssubhendu988@gmail.com>",
+  "author": "neautrino",
   "private": true,
   "version": "0.1.0",
   "type": "module",
