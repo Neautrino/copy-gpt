@@ -1,6 +1,8 @@
 {
   "name": "copy-chat",
-  "description": "Copy full AI chats as Markdown in one click.",
+  "description": "Copy full ChatGPT and Claude chats as Markdown in one click.",
+  "license": "MIT",
+  "author": "Subhendu Singh <ssubhendu988@gmail.com>",
   "private": true,
   "version": "0.1.0",
   "type": "module",

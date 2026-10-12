@@ -1,8 +1,8 @@
 import { storage } from 'wxt/utils/storage';
 import { DEFAULT_OPTIONS, type ExportOptions } from './options';
 
-/** Synced across the user's browsers; read by both the page button and the popup. */
-export const settingsItem = storage.defineItem<Partial<ExportOptions>>('sync:exportOptions', {
+/** Synced across the user's browsers; read by the content script and the popup. */
+const settingsItem = storage.defineItem<Partial<ExportOptions>>('sync:exportOptions', {
   fallback: {},
 });
 

@@ -190,10 +190,6 @@ button svg {
   animation: spin 0.8s linear infinite;
 }
 
-.i-alert {
-  display: none;
-}
-
 @keyframes spin {
   to {
     rotate: 360deg;

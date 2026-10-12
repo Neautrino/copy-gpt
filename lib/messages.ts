@@ -23,7 +23,7 @@ export interface ExportSuccess {
   warnings: string[];
 }
 
-export interface ExportFailure {
+interface ExportFailure {
   ok: false;
   error: string;
 }
@@ -32,7 +32,7 @@ export type ExportOutcome = ExportSuccess | ExportFailure;
 export type RenderOutcome = (ExportSuccess & { markdown: string; html: string }) | ExportFailure;
 
 // Responses cross the extension messaging boundary; the content script is the only responder.
-export async function requestStatus(tabId: number): Promise<PageStatus> {
+async function requestStatus(tabId: number): Promise<PageStatus> {
   const status: PageStatus = await browser.tabs.sendMessage(tabId, { type: 'status' } satisfies ContentRequest);
   return status;
 }

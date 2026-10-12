@@ -1,6 +1,6 @@
 import './style.css';
 import { browser } from 'wxt/browser';
-import { ICONS } from '@/components/icons';
+import { ICONS } from './icons';
 import { copyToClipboard } from '@/lib/clipboard';
 import {
   connectTab,

@@ -38,6 +38,8 @@ pnpm zip && pnpm zip:firefox   # store-ready zips
 
 Load a build manually: `chrome://extensions` → Developer mode → **Load unpacked** → `.output/chrome-mv3`.
 
+The extension icons in `public/icon/` are rendered from `assets/icon.svg`.
+
 ## How it works
 
 ```
@@ -59,9 +61,18 @@ Requests go to the same site you are on, with your existing session, only when y
 
 These endpoints are undocumented and can change. When an API response looks wrong, the extension falls back to the page and adds a note to the export. Update the adapter in `lib/sites/` when a site changes.
 
+## Privacy
+
+Copy Chat collects nothing. It has no server, analytics or tracking: conversations are read from the site you are on and go only to your clipboard or a file on your computer.
+
 ## Known limits
 
 - ChatGPT temporary chats aren't supported (their id never appears in the URL).
 - Signed-out ChatGPT chats aren't stored by ChatGPT, so they are read from the page.
 - Images are written as `*[Image]*` placeholders; image files aren't downloaded.
 - ChatGPT and Claude keep only nearby messages on the page, so the page fallback can miss earlier messages; the export says when that happened.
+- ChatGPT's interactive reply layouts (cards, quizzes, inline citations) are copied as their raw `<box>`, `<radio>`, `<Cite …/>`… markup.
+
+## License
+
+[MIT](LICENSE) © Subhendu Singh. Bundled third-party code and its licenses are listed in [`public/THIRD_PARTY_LICENSES.txt`](public/THIRD_PARTY_LICENSES.txt), which ships inside the extension.
