@@ -47,7 +47,7 @@ It has no access to any other website, your browsing history or your other tabs.
 - **No remote code.** Everything it runs ships inside the extension, as the Chrome and Firefox stores require.
 - **Open source.** The full code is in this repository under the MIT license.
 
-Found a security problem? Please report it privately to ssubhendu988@gmail.com instead of opening a public issue.
+Found a security problem? Please open an issue in this repository.
 
 ## Coming next
 
