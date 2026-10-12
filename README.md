@@ -51,16 +51,9 @@ Found a security problem? Please open an issue in this repository.
 
 ## Roadmap
 
-- [x] ChatGPT
-- [x] Claude
+- [x] ChatGPT and Claude
 - [x] Copy as Markdown, download as Markdown or JSON
-- [ ] Gemini
-- [ ] Grok
-- [ ] DeepSeek
-- [ ] Perplexity
-- [ ] Microsoft Copilot
-- [ ] Mistral Le Chat
-- [ ] Other chat sites (general mode)
+- [ ] More AI platforms: Gemini, Grok, DeepSeek, Perplexity, Microsoft Copilot, Mistral Le Chat and other chat sites
 - [ ] Images in exports
 - [ ] Bulk export (many chats into one `.zip`)
 - [ ] Clean up ChatGPT's interactive layouts (cards, quizzes, citations)
