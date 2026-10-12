@@ -1,0 +1,774 @@
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('fonts/bricolage-grotesque-latin.woff2') format('woff2');
+  font-weight: 400 700;
+  font-stretch: 75% 100%;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('fonts/jetbrains-mono-latin.woff2') format('woff2');
+  font-weight: 400 500;
+  font-display: swap;
+}
+
+/* Tokens. Radius rule: controls 10px, surfaces 16px, nothing else. */
+:root {
+  --paper: #f4f5f7;
+  --surface: #ffffff;
+  --ink: #15171c;
+  --muted: #5d6470;
+  --line: #e2e5ea;
+  --accent: #ffd84d;
+  --r-control: 10px;
+  --r-surface: 16px;
+  --shadow: 0 1px 2px rgb(21 23 28 / 0.05), 0 16px 48px rgb(21 23 28 / 0.08);
+  --sans: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 17px/1.55 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: clamp(30px, 3.4vw, 42px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+p {
+  margin: 0;
+}
+
+code,
+kbd {
+  font-family: var(--mono);
+  font-size: 0.86em;
+}
+
+.wrap {
+  width: min(1160px, 100% - 48px);
+  margin-inline: auto;
+}
+
+main > section {
+  padding-block: 112px;
+}
+
+main > section + section {
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- Nav ---------- */
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 72px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.brand img {
+  border-radius: 7px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  font-size: 15px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--muted);
+  transition: color 120ms var(--ease);
+}
+
+.nav-links a:hover {
+  color: var(--ink);
+}
+
+.nav-github {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-github svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ---------- Buttons ---------- */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: var(--r-control);
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition-property: background-color, box-shadow, scale;
+  transition-duration: 120ms;
+  transition-timing-function: var(--ease);
+}
+
+.button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.button:active {
+  scale: 0.97;
+}
+
+.button-primary {
+  background: var(--accent);
+  color: var(--ink);
+  box-shadow: inset 0 -1px 0 rgb(21 23 28 / 0.12);
+}
+
+.button-primary:hover {
+  background: #ffcf1f;
+}
+
+.button-quiet {
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line);
+  background: var(--surface);
+}
+
+.button-quiet:hover {
+  box-shadow: inset 0 0 0 1px #c9ced6;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: 64px;
+  padding-block: 56px 112px;
+}
+
+.hero h1 {
+  font-size: clamp(48px, 6.4vw, 84px);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  font-stretch: 85%;
+}
+
+.lede {
+  margin: 24px 0 36px;
+  max-width: 30ch;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* ---------- Hero demo: the same chat as a conversation and as its Markdown ---------- */
+
+.demo {
+  margin: 0;
+}
+
+.demo-stage {
+  border-radius: var(--r-surface);
+  background: var(--surface);
+  box-shadow: var(--shadow), 0 0 0 1px var(--line);
+  overflow: hidden;
+}
+
+.demo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 10px 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.demo-tabs {
+  display: flex;
+  gap: 2px;
+}
+
+.demo-tabs button,
+.demo-copy {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  border-radius: var(--r-control);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition-property: background-color, color, scale;
+  transition-duration: 120ms;
+  transition-timing-function: var(--ease);
+}
+
+.demo-tabs button {
+  padding: 0 12px;
+  color: var(--muted);
+}
+
+.demo-tabs button:hover {
+  color: var(--ink);
+}
+
+.demo-tabs button[aria-selected='true'] {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.demo-copy {
+  gap: 8px;
+  padding: 0 14px;
+  background: var(--accent);
+  color: var(--ink);
+  box-shadow: inset 0 -1px 0 rgb(21 23 28 / 0.12);
+}
+
+.demo-copy:hover {
+  background: #ffcf1f;
+}
+
+.demo-copy:active {
+  scale: 0.97;
+}
+
+.demo-tabs button:focus-visible,
+.demo-copy:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Copy and check icons cross-fade in place when the copy succeeds. */
+.demo-copy-icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+
+.demo-copy-icon svg {
+  position: absolute;
+  inset: 0;
+  width: 16px;
+  height: 16px;
+  transition-property: opacity, scale, filter;
+  transition-duration: 220ms;
+  transition-timing-function: var(--ease);
+}
+
+.demo-copy-icon svg:last-child,
+.demo-copy[data-copied] .demo-copy-icon svg:first-child {
+  opacity: 0;
+  scale: 0.25;
+  filter: blur(4px);
+}
+
+.demo-copy[data-copied] .demo-copy-icon svg:last-child {
+  opacity: 1;
+  scale: 1;
+  filter: blur(0);
+}
+
+/* Both views share one grid cell, so switching never changes the panel's height. */
+.demo-views {
+  display: grid;
+}
+
+.demo-view {
+  grid-area: 1 / 1;
+  padding: 28px;
+  min-width: 0;
+  transition-property: opacity, translate, visibility;
+  transition-duration: 220ms;
+  transition-timing-function: var(--ease);
+}
+
+.demo-markdown {
+  background: #fbfbfc;
+}
+
+.demo[data-view='chat'] .demo-markdown,
+.demo[data-view='markdown'] .demo-chat {
+  opacity: 0;
+  translate: 0 6px;
+  visibility: hidden;
+}
+
+.bubble {
+  max-width: 78%;
+  margin: 0 0 20px auto;
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: #eceef2;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.reply {
+  display: grid;
+  gap: 12px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.reply pre {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: var(--r-control);
+  background: var(--paper);
+  overflow-x: auto;
+}
+
+.reply code {
+  font-size: 13.5px;
+}
+
+.reply p code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--paper);
+}
+
+.md {
+  margin: 0;
+  font: 400 13.5px/1.6 var(--mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--ink);
+}
+
+.md b {
+  font-weight: 500;
+}
+
+.md-mark,
+.md-dim {
+  color: #8a909b;
+}
+
+.demo figcaption strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.demo figcaption {
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ---------- Three ways to copy ---------- */
+
+.ways-body {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  align-items: start;
+  gap: 72px;
+  margin-top: 48px;
+}
+
+.ways-shot {
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-surface);
+  box-shadow: var(--shadow), 0 0 0 1px var(--line);
+}
+
+.ways-list {
+  display: grid;
+  gap: 32px;
+  margin: 0;
+}
+
+.ways-list dt,
+.gets-grid dt {
+  font-size: 19px;
+  font-weight: 650;
+  margin-bottom: 6px;
+}
+
+.ways-list dd,
+.gets-grid dd {
+  margin: 0;
+  max-width: 52ch;
+  color: var(--muted);
+}
+
+.ways-list strong,
+.ways-list em {
+  color: var(--ink);
+  font-weight: 600;
+  font-style: normal;
+}
+
+kbd {
+  display: inline-block;
+  min-width: 1.9em;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--line), 0 1px 0 var(--line);
+  color: var(--ink);
+  text-align: center;
+}
+
+/* ---------- What you get ---------- */
+
+.gets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px 48px;
+  margin: 48px 0 0;
+}
+
+.gets-grid > div {
+  padding-top: 20px;
+  border-top: 2px solid var(--ink);
+}
+
+/* ---------- Privacy ---------- */
+
+.privacy {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 72px;
+  align-items: start;
+}
+
+.privacy h2 {
+  max-width: 14ch;
+}
+
+.facts {
+  display: grid;
+  gap: 14px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.facts li {
+  display: flex;
+  gap: 12px;
+  font-size: 18px;
+}
+
+.facts li::before {
+  content: '';
+  flex: none;
+  width: 10px;
+  height: 10px;
+  margin-top: 0.55em;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px rgb(21 23 28 / 0.25);
+}
+
+.perms {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border-radius: var(--r-surface);
+  box-shadow: 0 0 0 1px var(--line);
+  overflow: hidden;
+  font-size: 15px;
+}
+
+.perms caption {
+  padding-bottom: 12px;
+  text-align: left;
+  font-weight: 650;
+  font-size: 19px;
+}
+
+.perms th,
+.perms td {
+  padding: 14px 18px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.perms thead th {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  background: #fafbfc;
+}
+
+.perms tbody th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.perms td {
+  color: var(--muted);
+}
+
+.perms tbody tr {
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- Roadmap ---------- */
+
+.checklist {
+  columns: 2;
+  column-gap: 48px;
+  margin: 40px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  break-inside: avoid;
+  padding: 10px 0;
+  font-size: 17px;
+  color: var(--muted);
+}
+
+.checklist li::before,
+.checklist li svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  border-radius: 5px;
+}
+
+.checklist li:not(.done)::before {
+  content: '';
+  box-shadow: inset 0 0 0 1.5px #b9bec7;
+}
+
+.checklist li.done {
+  color: var(--ink);
+}
+
+.checklist li.done svg {
+  padding: 3px;
+  background: var(--ink);
+  color: var(--accent);
+}
+
+/* ---------- Install ---------- */
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  margin: 40px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 16px;
+  border-radius: var(--r-control);
+  background: var(--ink);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.steps code {
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.install-note {
+  margin-top: 40px;
+  color: var(--muted);
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 32px 48px;
+  border-top: 1px solid var(--line);
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.footer .brand {
+  font-size: 16px;
+  color: var(--ink);
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 900px) {
+  main > section {
+    padding-block: 72px;
+  }
+
+  .hero,
+  .ways-body,
+  .privacy {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+
+  .hero {
+    padding-block: 24px 72px;
+  }
+
+  .ways-shot {
+    max-width: 320px;
+  }
+
+  .gets-grid,
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .checklist {
+    columns: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .wrap {
+    width: min(1160px, 100% - 32px);
+  }
+
+  .nav-links a:not(.nav-github) {
+    display: none;
+  }
+
+  .lede {
+    font-size: 18px;
+  }
+
+  .demo-view {
+    padding: 20px;
+  }
+
+  /* Narrow screens: the Markdown wraps much taller, so size the panel to the view that is showing. */
+  .demo[data-view='chat'] .demo-markdown,
+  .demo[data-view='markdown'] .demo-chat {
+    display: none;
+  }
+
+  .bubble,
+  .reply {
+    font-size: 15px;
+  }
+
+  .md {
+    font-size: 12px;
+  }
+
+  .perms tbody th {
+    white-space: normal;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+  }
+}

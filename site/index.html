@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Copy Chat: copy whole ChatGPT and Claude chats as Markdown</title>
+    <meta
+      name="description"
+      content="A free, open-source browser extension that copies an entire ChatGPT or Claude conversation as clean Markdown in one click. Nothing leaves your browser."
+    />
+    <meta property="og:title" content="Copy Chat" />
+    <meta property="og:description" content="Copy whole ChatGPT and Claude chats as clean Markdown in one click." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
+    <link rel="preload" href="fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="demo.js" defer></script>
+  </head>
+  <body>
+    <header class="nav wrap">
+      <a class="brand" href="#top" aria-label="Copy Chat home">
+        <img src="images/logo.svg" alt="" width="28" height="28" />
+        <span>Copy Chat</span>
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="#how">How it works</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#install">Install</a>
+        <a class="nav-github" href="https://github.com/Neautrino/copy-gpt">
+          <svg aria-hidden="true"><use href="images/icons.svg#github" /></svg>
+          <span>GitHub</span>
+        </a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero wrap">
+        <div class="hero-copy">
+          <h1>Copy the whole chat.</h1>
+          <p class="lede">
+            Every message from a ChatGPT or Claude conversation, as clean Markdown, in one click. Free and open source.
+          </p>
+          <div class="actions">
+            <a class="button button-primary" href="https://github.com/Neautrino/copy-gpt/releases/latest">
+              <svg aria-hidden="true"><use href="images/icons.svg#download" /></svg>
+              Download for Chrome
+            </a>
+            <a class="button button-quiet" href="https://github.com/Neautrino/copy-gpt">
+              <svg aria-hidden="true"><use href="images/icons.svg#github" /></svg>
+              View source
+            </a>
+          </div>
+        </div>
+
+        <figure class="demo" data-demo data-view="chat">
+          <div class="demo-stage">
+            <div class="demo-bar">
+              <div class="demo-tabs" role="tablist" aria-label="Example chat">
+                <button type="button" role="tab" id="tab-chat" aria-controls="view-chat" aria-selected="true">Chat</button>
+                <button type="button" role="tab" id="tab-md" aria-controls="view-md" aria-selected="false" tabindex="-1">Markdown</button>
+              </div>
+              <button class="demo-copy" type="button">
+                <span class="demo-copy-icon"><svg aria-hidden="true"><use href="images/icons.svg#copy" /></svg><svg aria-hidden="true"><use href="images/icons.svg#check" /></svg></span>
+                <span class="demo-copy-label">Copy chat</span>
+              </button>
+            </div>
+            <div class="demo-views">
+            <div class="demo-view demo-chat" id="view-chat" role="tabpanel" aria-labelledby="tab-chat">
+              <div class="bubble">How do I undo my last git commit but keep the changes?</div>
+              <div class="reply">
+                <p>Use a soft reset. It moves the branch back one commit and keeps your changes staged:</p>
+                <pre><code>git reset --soft HEAD~1</code></pre>
+                <p>To unstage them too, use <code>--mixed</code>:</p>
+                <pre><code>git reset HEAD~1</code></pre>
+              </div>
+            </div>
+
+            <div class="demo-view demo-markdown" id="view-md" role="tabpanel" aria-labelledby="tab-md">
+              <pre class="md"><span class="md-mark">#</span> <b>Undo the last Git commit</b>
+
+<span class="md-dim">*ChatGPT · exported 2026-10-12 · [open chat](https://chatgpt.com/c/…)*</span>
+
+<span class="md-mark">##</span> <b>User</b>
+
+How do I undo my last git commit but keep the changes?
+
+<span class="md-mark">##</span> <b>ChatGPT</b>
+
+Use a soft reset. It moves the branch back one commit and keeps your changes staged:
+
+<span class="md-dim">```bash</span>
+git reset --soft HEAD~1
+<span class="md-dim">```</span>
+
+To unstage them too, use <span class="md-dim">`</span>--mixed<span class="md-dim">`</span>:
+
+<span class="md-dim">```bash</span>
+git reset HEAD~1
+<span class="md-dim">```</span></pre>
+            </div>
+
+            </div>
+          </div>
+          <figcaption>Click <strong>Copy chat</strong> to get this example as Markdown, just like the extension does.</figcaption>
+        </figure>
+      </section>
+
+      <section class="ways wrap" id="how">
+        <h2>Three ways to copy</h2>
+        <div class="ways-body">
+          <img
+            class="ways-shot"
+            src="images/popup.png"
+            width="320"
+            height="197"
+            alt="The Copy Chat popup on a ChatGPT chat, with Copy chat, Markdown and JSON buttons and the message Copied 12 messages."
+          />
+          <dl class="ways-list">
+            <div>
+              <dt>From the toolbar</dt>
+              <dd>Click the Copy Chat icon, then <strong>Copy chat</strong>, <strong>Markdown</strong> or <strong>JSON</strong>.</dd>
+            </div>
+            <div>
+              <dt>From the page</dt>
+              <dd>Right-click anywhere in the chat and choose <em>Copy chat as Markdown</em>, or download it as Markdown or JSON.</dd>
+            </div>
+            <div>
+              <dt>From the keyboard</dt>
+              <dd>
+                Press <kbd>Alt</kbd> <kbd>Shift</kbd> <kbd>C</kbd>. Change the keys any time at
+                <code>chrome://extensions/shortcuts</code>.
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="gets wrap">
+        <h2>What you get</h2>
+        <dl class="gets-grid">
+          <div>
+            <dt>The full conversation</dt>
+            <dd>Long chats come through in full, not just the part on screen.</dd>
+          </div>
+          <div>
+            <dt>The version you're reading</dt>
+            <dd>If you edited a message or regenerated a reply, the other versions stay out.</dd>
+          </div>
+          <div>
+            <dt>Formatting intact</dt>
+            <dd>Code blocks, tables, lists and math are kept as proper Markdown.</dd>
+          </div>
+          <div>
+            <dt>Artifacts and canvases</dt>
+            <dd>Claude artifacts and ChatGPT canvas documents, in their final version.</dd>
+          </div>
+          <div>
+            <dt>Extras when you want them</dt>
+            <dd>Switch on thinking steps, tool calls or the text of uploaded files.</dd>
+          </div>
+          <div>
+            <dt>Pastes well anywhere</dt>
+            <dd>Markdown for editors and notes, formatted text for Google Docs and Notion.</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="privacy wrap" id="privacy">
+        <div class="privacy-copy">
+          <h2>Your chats stay on your computer.</h2>
+          <ul class="facts">
+            <li>No account, no server, no analytics, no tracking.</li>
+            <li>It only works when you click, and only on the chat in front of you.</li>
+            <li>Your login stays with ChatGPT and Claude. Nothing is stored.</li>
+            <li>Open source under the MIT license, so anyone can check.</li>
+          </ul>
+        </div>
+        <table class="perms">
+          <caption>Permissions it asks for</caption>
+          <thead>
+            <tr>
+              <th scope="col">Permission</th>
+              <th scope="col">Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">chatgpt.com, claude.ai</th>
+              <td>Read the chat you ask it to copy. It never changes the page.</td>
+            </tr>
+            <tr>
+              <th scope="row">Scripting</th>
+              <td>Work in chat tabs that were open before you installed it.</td>
+            </tr>
+            <tr>
+              <th scope="row">Context menus</th>
+              <td>Add the right-click items.</td>
+            </tr>
+            <tr>
+              <th scope="row">Storage</th>
+              <td>Remember your export settings.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="roadmap wrap">
+        <h2>Roadmap</h2>
+        <ul class="checklist">
+          <li class="done"><svg aria-hidden="true"><use href="images/icons.svg#check" /></svg>ChatGPT and Claude</li>
+          <li class="done"><svg aria-hidden="true"><use href="images/icons.svg#check" /></svg>Copy as Markdown, download as Markdown or JSON</li>
+          <li>More AI platforms: Gemini, Grok, DeepSeek, Perplexity, Copilot, Le Chat and others</li>
+          <li>Images in exports</li>
+          <li>Bulk export of many chats into one zip</li>
+          <li>Cleaner ChatGPT interactive layouts</li>
+          <li>ChatGPT temporary chats</li>
+          <li>PDF and HTML export</li>
+        </ul>
+      </section>
+
+      <section class="install wrap" id="install">
+        <h2>Install</h2>
+        <ol class="steps">
+          <li>
+            <p>Download the Chrome zip from the <a href="https://github.com/Neautrino/copy-gpt/releases/latest">latest release</a> and unzip it.</p>
+          </li>
+          <li>
+            <p>Open <code>chrome://extensions</code> and turn on <strong>Developer mode</strong>.</p>
+          </li>
+          <li>
+            <p>Click <strong>Load unpacked</strong> and choose the unzipped folder. Then open any ChatGPT or Claude chat.</p>
+          </li>
+        </ol>
+        <p class="install-note">Works in Chrome, Edge, Brave and other Chromium browsers. A Firefox build is in the same release.</p>
+      </section>
+    </main>
+
+    <footer class="footer wrap">
+      <a class="brand" href="#top">
+        <img src="images/logo.svg" alt="" width="24" height="24" />
+        <span>Copy Chat</span>
+      </a>
+      <p>MIT licensed. <a href="https://github.com/Neautrino/copy-gpt">Source on GitHub</a>.</p>
+    </footer>
+  </body>
+</html>
