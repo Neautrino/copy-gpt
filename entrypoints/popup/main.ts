@@ -3,9 +3,9 @@ import { browser } from 'wxt/browser';
 import { ICONS } from '@/components/icons';
 import { copyToClipboard } from '@/lib/clipboard';
 import {
+  connectTab,
   requestRender,
   requestRun,
-  requestStatus,
   SUPPORTED_SITES_HINT,
   type ExportAction,
   type ExportOutcome,
@@ -89,7 +89,7 @@ for (const action of ['markdown', 'json'] satisfies ExportAction[]) {
 if (tabId === undefined) {
   status.textContent = SUPPORTED_SITES_HINT;
 } else {
-  const page = await requestStatus(tabId).catch(() => null);
+  const page = await connectTab(tabId, tab?.url).catch(() => null);
   if (!page) status.textContent = SUPPORTED_SITES_HINT;
   else if (!page.onChat) status.textContent = `Open a chat on ${page.siteName} to copy it.`;
   else {

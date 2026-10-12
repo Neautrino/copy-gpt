@@ -55,7 +55,7 @@ lib/
   html-to-markdown.ts   Page fallback: rendered HTML → Markdown (KaTeX, code, tables)
 ```
 
-Requests go to the same site you are on, with your existing session, only when you ask for an export. Permissions: `storage` (settings) and `contextMenus` (right-click items); site access comes from the content-script matches.
+Requests go to the same site you are on, with your existing session, only when you ask for an export. Permissions: `storage` (settings), `contextMenus` (right-click items), and `scripting` plus access to chatgpt.com / claude.ai so tabs that were open before installing or updating the extension work without a reload.
 
 These endpoints are undocumented and can change. When an API response looks wrong, the extension falls back to the page and adds a note to the export. Update the adapter in `lib/sites/` when a site changes.
 

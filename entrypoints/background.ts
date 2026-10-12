@@ -1,6 +1,13 @@
 import { browser } from 'wxt/browser';
 import { defineBackground } from 'wxt/utils/define-background';
-import { EXPORT_ACTIONS, requestRun, SUPPORTED_SITES_HINT, type ExportAction, type ExportOutcome } from '@/lib/messages';
+import {
+  connectTab,
+  EXPORT_ACTIONS,
+  requestRun,
+  SUPPORTED_SITES_HINT,
+  type ExportAction,
+  type ExportOutcome,
+} from '@/lib/messages';
 
 const MENU_TITLES: Record<ExportAction, string> = {
   copy: 'Copy chat as Markdown',
@@ -31,11 +38,12 @@ async function showOutcome(tabId: number, outcome: ExportOutcome): Promise<void>
   }, kind === 'success' ? 3000 : 10000);
 }
 
-async function run(tabId: number, action: ExportAction): Promise<void> {
-  const outcome = await requestRun(tabId, action).catch(
-    // No content script answered: not a supported site, or the tab was open before the extension was installed.
-    (): ExportOutcome => ({ ok: false, error: `${SUPPORTED_SITES_HINT} If it is open, reload the tab.` }),
-  );
+async function run(tabId: number, url: string | undefined, action: ExportAction): Promise<void> {
+  const failed = (error: string): ExportOutcome => ({ ok: false, error });
+  const page = await connectTab(tabId, url).catch(() => null);
+  const outcome = page
+    ? await requestRun(tabId, action).catch(() => failed('The chat tab stopped responding. Reload it and try again.'))
+    : failed(SUPPORTED_SITES_HINT);
   await showOutcome(tabId, outcome);
 }
 
@@ -53,10 +61,10 @@ export default defineBackground(() => {
 
   browser.contextMenus.onClicked.addListener((info, tab) => {
     const action = EXPORT_ACTIONS.find((candidate) => candidate === info.menuItemId);
-    if (action && tab?.id !== undefined) void run(tab.id, action);
+    if (action && tab?.id !== undefined) void run(tab.id, tab.url, action);
   });
 
   browser.commands.onCommand.addListener((command, tab) => {
-    if (command === 'copy-chat' && tab?.id !== undefined) void run(tab.id, 'copy');
+    if (command === 'copy-chat' && tab?.id !== undefined) void run(tab.id, tab.url, 'copy');
   });
 });

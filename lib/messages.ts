@@ -47,6 +47,30 @@ export async function requestRun(tabId: number, action: ExportAction): Promise<E
   return outcome;
 }
 
+/** Hosts with a content script (keep in sync with `host_permissions` and the content script's `matches`). */
+const CHAT_HOSTS = ['chatgpt.com', 'chat.openai.com', 'claude.ai'];
+
+/**
+ * Asks the tab's content script for its status, injecting the scripts first when the tab has none:
+ * Chrome doesn't add content scripts to tabs that were open before the extension was installed or
+ * reloaded. The extension's host permissions for the chat sites allow the injection.
+ * Returns null for tabs that aren't a supported site.
+ */
+export async function connectTab(tabId: number, url: string | undefined): Promise<PageStatus | null> {
+  try {
+    return await requestStatus(tabId);
+  } catch {
+    // No content script listening yet.
+  }
+  const host = url ? new URL(url).hostname : '';
+  if (!CHAT_HOSTS.includes(host)) return null;
+  await browser.scripting.executeScript({ target: { tabId }, files: ['/content-scripts/content.js'] });
+  if (host !== 'claude.ai') {
+    await browser.scripting.executeScript({ target: { tabId }, files: ['/content-scripts/chatgpt-share.js'], world: 'MAIN' });
+  }
+  return requestStatus(tabId).catch(() => null);
+}
+
 export function isContentRequest(message: unknown): message is ContentRequest {
   if (!message || typeof message !== 'object' || !('type' in message)) return false;
   if (message.type === 'status' || message.type === 'render') return true;

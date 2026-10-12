@@ -6,9 +6,11 @@ export default defineConfig({
     name: 'Copy Chat',
     description:
       'Copy or export full ChatGPT and Claude conversations as Markdown. Nothing leaves your browser.',
-    // `storage` for settings, `contextMenus` for the right-click items. Site access comes from the
-    // content-script matches; no tabs/downloads/clipboard permissions are needed.
-    permissions: ['storage', 'contextMenus'],
+    // `storage`: settings. `contextMenus`: right-click items. `scripting` + host permissions: add the
+    // content script to chat tabs that were open before install/update. The hosts are the same ones the
+    // content script already runs on, so Chrome shows no extra install warning.
+    permissions: ['storage', 'contextMenus', 'scripting'],
+    host_permissions: ['https://chatgpt.com/*', 'https://chat.openai.com/*', 'https://claude.ai/*'],
     commands: {
       'copy-chat': {
         suggested_key: { default: 'Alt+Shift+C' },
