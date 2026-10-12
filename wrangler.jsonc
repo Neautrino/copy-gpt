@@ -1,0 +1,8 @@
+// Cloudflare Workers config for the landing page: serves the static files in site/.
+{
+  "name": "copy-gpt",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./site"
+  }
+}
